@@ -9,6 +9,7 @@ import {
   StyleSheet,
 } from "react-native";
 import { AntDesign, EvilIcons } from "@expo/vector-icons";
+import { useNavigation } from "@react-navigation/native";
 
 const RECIPE_LIST = gql`
   query listRecipes {
@@ -32,10 +33,10 @@ const REMOVE_RECIPE = gql`
   }
 `;
 
-function RecipeList() {
+function RecipeList(props) {
   const { loading, error, data } = useQuery(RECIPE_LIST);
   const [removeRecipe] = useMutation(REMOVE_RECIPE);
-
+  const navigation = useNavigation();
   function onDelete(id) {
     removeRecipe({
       variables: {
@@ -47,50 +48,60 @@ function RecipeList() {
   if (loading) return <Text>Loading...</Text>;
   if (error) return <Text>Error :(</Text>;
   return (
-    <TouchableOpacity onPress={() => console.log("test")} style={styles.smBtn}>
-      <FlatList
-        data={data.listRecipes.items}
-        renderItem={({ item }) => (
-          <View
-            key={item.title}
-            style={{
-              width: "95%",
-              flexDirection: "row",
-              marginHorizontal: "2.5%",
-              marginVertical: 5,
-              padding: 10,
-              alignItems: "center",
-              backgroundColor: "#fff",
-              borderRadius: 5,
-              justifyContent: "space-between",
-            }}
-          >
-            <Text style={{ fontSize: 17 }}>{item.title}</Text>
-            <View style={{ flexDirection: "row" }}>
-              <TouchableOpacity
-                onPress={() => console.log("test")}
-                style={styles.smBtn}
-              >
-                <AntDesign name="star" size={24} color="grey" />
-              </TouchableOpacity>
+    <FlatList
+      data={data.listRecipes.items}
+      onRefresh={() => {
+        switch (this.props.refresh) {
+          case "REFRESH":
+            data.listRecipes.items;
+            break;
+          case "REFRESH_":
+            this.props.getHot();
+            break;
+        }
+      }}
+      refreshing={false}
+      renderItem={({ item }) => (
+        <TouchableOpacity
+          key={item.title}
+          onPress={() => navigation.navigate("ViewRecipe")}
+          style={{
+            width: "95%",
+            flexDirection: "row",
+            marginHorizontal: "2.5%",
+            marginVertical: 5,
+            padding: 10,
+            alignItems: "center",
+            backgroundColor: "#fff",
+            borderRadius: 5,
+            justifyContent: "space-between",
+          }}
+        >
+          <Text style={{ fontSize: 17 }}>{item.title}</Text>
+          <View style={{ flexDirection: "row" }}>
+            <TouchableOpacity
+              // onPress={() => navigation.navigate("Show")}
+              style={styles.smBtn}
+            >
+              <AntDesign name="star" size={24} color="grey" />
+            </TouchableOpacity>
 
-              <TouchableOpacity
-                onPress={() => navigation.navigate("Remove")}
-                style={styles.smBtn}
-              >
-                <AntDesign name="edit" size={24} color="green" />
-              </TouchableOpacity>
-              <TouchableOpacity
-                onPress={() => onDelete(item.id)}
-                style={styles.smBtn}
-              >
-                <EvilIcons name="trash" size={24} color="red" />
-              </TouchableOpacity>
-            </View>
+            <TouchableOpacity
+              onPress={() => navigation.navigate("EditRecipe")}
+              style={styles.smBtn}
+            >
+              <AntDesign name="edit" size={24} color="green" />
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => onDelete(item.id)}
+              style={styles.smBtn}
+            >
+              <EvilIcons name="trash" size={24} color="red" />
+            </TouchableOpacity>
           </View>
-        )}
-      />
-    </TouchableOpacity>
+        </TouchableOpacity>
+      )}
+    />
   );
 }
 

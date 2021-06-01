@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Text,
   View,
@@ -8,24 +8,24 @@ import {
 } from "react-native";
 import { FontAwesome5, MaterialCommunityIcons } from "@expo/vector-icons";
 import RecipeList from "./RecipeList";
-// import { NavigationHelpersContext } from "@react-navigation/native";
+import FavoriteList from "./FavoriteList";
+
+import styles from "../../theme/styles";
 
 import { TabView, SceneMap } from "react-native-tab-view";
 
 const ReceiptRoute = () => (
-  // <View style={{ flex: 1, backgroundColor: "#ff4081" }} />
-  <View
-    style={[
-      {
-        flexDirection: "row",
-        borderBottomWidth: 1,
-      },
-    ]}
-  ></View>
+  <View style={{ flex: 1, backgroundColor: "#ff4081" }}>
+    <RecipeList
+    // refresh={refresh}
+    />
+  </View>
 );
 
 const FavoriteRoute = () => (
-  <View style={{ flex: 1, backgroundColor: "#673ab7" }} />
+  <View style={{ flex: 1, backgroundColor: "#673ab7" }}>
+    {/* <FavoriteList /> */}
+  </View>
 );
 
 let screenWidth = Dimensions.get("window").width;
@@ -36,20 +36,22 @@ export default function Profile({ navigation }) {
   //   index: 0,
   //   bluriii: true,
   // };
+  const [refresh] = useState(false);
+
   const layout = useWindowDimensions();
   const [index, setIndex] = React.useState(0);
   const [routes] = React.useState([
-    { key: "receipt", title: "Receipt" },
-    { key: "favorite", title: "Favorite" },
+    { key: "first", title: "Receipt" },
+    { key: "second", title: "Favorite" },
   ]);
 
   const renderScene = SceneMap({
-    receipt: ReceiptRoute,
-    favorite: FavoriteRoute,
+    first: ReceiptRoute,
+    second: FavoriteRoute,
   });
 
   return (
-    <View style={{ marginTop: 45, flex: 1 }}>
+    <View style={{ marginTop: 5, flex: 1 }}>
       <View>
         <View
           style={[
@@ -172,55 +174,16 @@ export default function Profile({ navigation }) {
         </View>
       </View>
 
-      {/* <View
-        style={[
-          {
-            flexDirection: "row",
-            borderBottomWidth: 1,
-          },
-        ]}
-      >
-        <TouchableOpacity
-          style={[
-            //   styles.buttonTabs,
-            //   styles.center,
-            {
-              alignItems: "center",
-              justifyContent: "center",
-              width: screenWidth * 0.45,
-            },
-          ]}
-          onPress={() => this.onIndexChange(0)}
-          ref={(component) => (this.touchable = component)}
-        >
-          <Text>RECIPES</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity
-          style={[
-            //   styles.buttonTabs,
-
-            //   styles.center,
-            {
-              alignItems: "center",
-              justifyContent: "center",
-              flexDirection: "row",
-              width: screenWidth * 0.45,
-            },
-          ]}
-          onPress={() => this.onIndexChange(1)}
-        >
-          <Text>FAVORITES</Text>
-        </TouchableOpacity>
-      </View> */}
-
       <TabView
         navigationState={{ index, routes }}
         renderScene={renderScene}
         onIndexChange={setIndex}
         initialLayout={{ width: layout.width }}
+        // navigationState={{ index: this.state.index, routes }}
+        // renderScene={renderScene}
+        // onIndexChange={this.onIndexChange}
+        // initialLayout={initialLayout}
       />
-      <RecipeList />
     </View>
   );
 }
