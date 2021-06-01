@@ -6,3 +6,4 @@
 - Install Node Packages
   npm install @apollo/client graphql
   @react-navigation/native
+  npm install @react-navigation/drawer

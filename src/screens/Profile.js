@@ -15,7 +15,7 @@ import styles from "../../theme/styles";
 import { TabView, SceneMap } from "react-native-tab-view";
 
 const ReceiptRoute = () => (
-  <View style={{ flex: 1, backgroundColor: "#ff4081" }}>
+  <View style={{ flex: 1, backgroundColor: "white" }}>
     <RecipeList
     // refresh={refresh}
     />
@@ -23,7 +23,7 @@ const ReceiptRoute = () => (
 );
 
 const FavoriteRoute = () => (
-  <View style={{ flex: 1, backgroundColor: "#673ab7" }}>
+  <View style={{ flex: 1, backgroundColor: "white" }}>
     {/* <FavoriteList /> */}
   </View>
 );
@@ -51,7 +51,7 @@ export default function Profile({ navigation }) {
   });
 
   return (
-    <View style={{ marginTop: 5, flex: 1 }}>
+    <View style={{ flex: 1, backgroundColor: "white" }}>
       <View>
         <View
           style={[
@@ -67,7 +67,7 @@ export default function Profile({ navigation }) {
             },
           ]}
         >
-          <View style={{ alignItems: "center" }}>
+          {/* <View style={{ alignItems: "center" }}>
             <View style={[{ flexDirection: "row" }]}>
               <FontAwesome5 name="store" size={24} color="black" />
               <Text
@@ -82,10 +82,9 @@ export default function Profile({ navigation }) {
                 CookieTown
               </Text>
             </View>
-          </View>
+          </View> */}
           <View
             style={[
-              // styles.spaceAround,
               {
                 alignItems: "center",
                 justifyContent: "space-around",
@@ -112,7 +111,7 @@ export default function Profile({ navigation }) {
                 <FontAwesome5 name="cookie-bite" size={24} color="black" />
                 <Text style={[{ color: "black", fontWeight: "bold" }]}>
                   {" "}
-                  Coins: <Text> 500</Text>
+                  Coins: 500
                 </Text>
               </View>
             </View>
@@ -137,7 +136,7 @@ export default function Profile({ navigation }) {
                   {
                     flexDirection: "row",
                     // marginRight: 20,
-                    width: 70,
+                    width: 100,
                     height: 30,
                     justifyContent: "center",
                     alignItems: "center",
@@ -150,6 +149,10 @@ export default function Profile({ navigation }) {
                   size={30}
                   color="black"
                 />
+                <Text style={[{ color: "black", fontWeight: "bold" }]}>
+                  {" "}
+                  Transactions
+                </Text>
               </TouchableOpacity>
             </View>
           </View>
